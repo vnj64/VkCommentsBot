@@ -1,12 +1,44 @@
-from dotenv import load_dotenv
-import os
+from dataclasses import dataclass
+from environs import Env
 
-load_dotenv()
 
-token = os.getenv("TOKEN")
 
-host = os.getenv("DATABASE_HOST")
-password = os.getenv("DATABASE_PASSWORD")
-user = os.getenv("DATABASE_USER")
-name = os.getenv("DATABASE_NAME")
-port = os.getenv("DATABASE_PORT")
+
+@dataclass
+class TgBot:
+    token: str
+    use_redis: bool
+
+
+@dataclass
+class Db:
+    host: str
+    password: str
+    user: str
+    database: str
+    port: str
+
+
+@dataclass
+class Config:
+    bot: TgBot
+    db: Db
+
+
+def load_config(path: str = None):
+    env = Env()
+    env.read_env(path)
+
+    return Config(
+        bot=TgBot(
+            token=env.str("BOT_TOKEN"),
+            use_redis=env.bool("USE_REDIS")
+        ),
+        db=Db(
+            host=env.str("DATABASE_HOST"),
+            password=env.str("DATABASE_PASSWORD"),
+            user=env.str("DATABASE_USER"),
+            database=env.str("DATABASE_NAME"),
+            port=env.str("DATABASE_PORT"),
+        )
+    )
