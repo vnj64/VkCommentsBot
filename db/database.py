@@ -1,5 +1,7 @@
 import psycopg2
-from config import host, password, user, name, port
+from config import load_config
+
+config = load_config('.env')
 
 
 def connect():
@@ -8,11 +10,11 @@ def connect():
         print("Connecting to database.")
 
         conn = psycopg2.connect(
-            host=host,
-            password=password,
-            user=user,
-            dbname=name,
-            port=port
+            host=config.db.host,
+            password=config.db.password,
+            user=config.db.user,
+            dbname=config.db.database,
+            port=config.db.port
         )
 
         cur = conn.cursor()
