@@ -1,15 +1,17 @@
+import asyncio
+
+import aioreq
 import requests
-from config import token
+from config import load_config
+
+config = load_config('.env')
 
 
-def all_comments():
-    comments = []
-    URL = f"https://api.vk.com/method/wall.getComments?owner_id=-185709218&post_id=63&count=100&sort=asc&access_token={token}&v=5.131"
-    req = requests.get(URL)
-    json_data = req.json()
-    resp = json_data['response']['items']
+async def checker(group_id, post_id, count):
+    async with aioreq.Client() as client:
+        response = await client.get(f"https://api.vk.com/method/wall.getComments?owner_id={group_id}&post_id={post_id}"
+                                    f"&count={count}&sort=asc&access_token={config.api.api_token}&v=5.131")
 
-    for i in resp:
-        comments.append([i['text'], i['from_id']])
+        print(response.content)
 
-    return comments
+asyncio.run(checker("-185709218", "63", "100"))
