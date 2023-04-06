@@ -5,6 +5,7 @@ services:
     container_name: "${BOT_CONTAINER_NAME}"
     build:
       context: .
+      dockerfile: Dockerfile
     working_dir: "/usr/src/app/${BOT_NAME}"
     volumes:
       - .:/usr/src/app/${BOT_NAME}
@@ -26,8 +27,3 @@ services:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-
-
-networks:
-  bot:
-    driver: bridge
