@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Column, String, select, insert
+from sqlalchemy import BigInteger, Column, String, select, insert, Integer
 from sqlalchemy.orm import sessionmaker
 
 from db.db_base import Base
@@ -6,7 +6,8 @@ from db.db_base import Base
 
 class Keyword(Base):
     __tablename__ = 'keywords'
-    telegram_id = Column(BigInteger, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(BigInteger)
     keyword = Column(String(length=100))
 
     @classmethod
@@ -14,7 +15,7 @@ class Keyword(Base):
         async with session_maker() as db_session:
             sql = select(cls.keyword).where(cls.telegram_id == telegram_id)
             request = await db_session.execute(sql)
-            keyword: cls = request.scalar()
+            keyword: cls = request.all()
         return keyword
 
     @classmethod
