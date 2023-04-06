@@ -1,12 +1,11 @@
 from aiogram import types, Dispatcher
-from sqlalchemy.orm import sessionmaker
-from keyboards.reply.main_menu import back_main_menu
-from db.get_keywords import get_keywords_list
+from models.keywords import Keyword
 
 
 async def check_keywords(message: types.Message):
-    text = get_keywords_list()
-    await message.answer(text, reply_markup=back_main_menu)
+    session_maker = message.bot.get('db')
+    keyword = await Keyword.get_keyword(session_maker=session_maker, telegram_id=message.from_user.id)
+    await message.answer(keyword)
 
 
 def register_checker(dp: Dispatcher):
