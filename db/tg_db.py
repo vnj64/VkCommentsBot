@@ -7,7 +7,7 @@ from db.db_base import Base
 
 async def create_db_session(config: Config):
     engine = create_async_engine(
-        f"postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}:38743/{config.db.database}",
+        f"postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}:5432/{config.db.database}",
         future=True
     )
     async with engine.begin() as conn:
