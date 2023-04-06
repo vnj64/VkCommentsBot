@@ -1,5 +1,6 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import Text
 
 from states.comment_state import CommentState
 
@@ -29,7 +30,7 @@ async def get_comments(message: types.Message, state: FSMContext):
 
 
 def register_comment_handlers(dp: Dispatcher):
-    dp.register_message_handler(add_group, text='Добавить пост ✍️')
+    dp.register_message_handler(add_group, Text(startswith="Добавить"))
     dp.register_message_handler(add_post, state=CommentState.group_id)
     dp.register_message_handler(add_count, state=CommentState.post_id)
     dp.register_message_handler(get_comments, state=CommentState.count)
