@@ -1,6 +1,6 @@
 from aiogram import types, Dispatcher
-from sqlalchemy.orm import sessionmaker
 from keyboards.reply.main_menu import back_main_menu
+
 
 async def generate_profile_text(user_id: int, username: str):
     text = f"""
