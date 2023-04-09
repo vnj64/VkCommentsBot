@@ -3,14 +3,14 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from bot_handlers.add_post import register_comment_handlers
 from middlewares.db import DbMiddleware
 from bot_handlers.start import register_start
 from bot_handlers.profile import register_profile
 from bot_handlers.input_keyword import register_get_keyword
 from bot_handlers.add_keyword import register_add_keyword
 from bot_handlers.get_keywords import register_checker
-from bot_handlers.comments import register_comments
+from bot_handlers.comments import register_variables_handler
+from bot_handlers.add_post import register_group_add
 from config import load_config
 from db.tg_db import create_db_session
 
@@ -27,8 +27,8 @@ def register_all_handlers(dp):
     register_get_keyword(dp)
     register_add_keyword(dp)
     register_checker(dp)
-    register_comments(dp)
-    register_comment_handlers(dp)
+    register_variables_handler(dp)
+    register_group_add(dp)
 
 
 async def main():
