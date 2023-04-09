@@ -2,6 +2,9 @@ from dataclasses import dataclass
 from environs import Env
 
 
+@dataclass
+class Api:
+    api_token: str
 
 
 @dataclass
@@ -21,6 +24,7 @@ class Db:
 
 @dataclass
 class Config:
+    api: Api
     bot: TgBot
     db: Db
 
@@ -30,6 +34,9 @@ def load_config(path: str = None):
     env.read_env(path)
 
     return Config(
+        api=Api(
+            api_token=env.str("TOKEN")
+        ),
         bot=TgBot(
             token=env.str("BOT_TOKEN"),
             use_redis=env.bool("USE_REDIS")
