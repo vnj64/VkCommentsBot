@@ -8,7 +8,7 @@ class Keyword(Base):
     __tablename__ = 'keywords'
     id = Column(Integer, primary_key=True, autoincrement=True)
     telegram_id = Column(BigInteger)
-    keyword = Column(String(length=100))
+    keyword = Column(String(length=100), unique=True)
 
     @classmethod
     async def get_keyword(cls, session_maker: sessionmaker, telegram_id: int):
