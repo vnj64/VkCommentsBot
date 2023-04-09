@@ -7,12 +7,16 @@ from states.keyword_state import KeywordState
 
 
 async def add_keyword(message: types.Message, state: FSMContext):
-    await state.update_data(keyword=message.text)
+    await state.update_data(keyword=str(message.text).split())
     data = await state.get_data()
     word = f"{data['keyword']}"
     session_maker = message.bot.get('db')
-    await message.answer(f"Ваше ключевое слово: {data['keyword']}. Я запомнил.", reply_markup=back_main_menu)
-    await Keyword.add_keyword(session_maker=session_maker, telegram_id=message.from_user.id, keyword=word)
+    if len(word) < 2:
+        await message.answer(f"Ваше ключевое слово: {data['keyword']}. Я запомнил.", reply_markup=back_main_menu)
+        await Keyword.add_keyword(session_maker=session_maker, telegram_id=message.from_user.id, keyword=word)
+    else:
+        await message.answer(f"Ваши ключевые слова: {data['keyword']}. Я запомнил.", reply_markup=back_main_menu)
+        await Keyword.add_keyword(session_maker=session_maker, telegram_id=message.from_user.id, keyword=word)
     await state.finish()
 
 
