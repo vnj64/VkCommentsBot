@@ -10,7 +10,6 @@ class Post(Base):
     telegram_id = Column(BigInteger)
     owner_id = Column(BigInteger)
     post_id = Column(Integer)
-    count = Column(Integer)
 
     @classmethod
     async def get_post_info(cls, session_maker: sessionmaker, telegram_id: int):
