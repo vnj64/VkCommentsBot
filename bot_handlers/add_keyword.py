@@ -21,4 +21,4 @@ async def add_keyword(message: types.Message, state: FSMContext):
 
 
 def register_add_keyword(dp: Dispatcher):
-    dp.register_message_handler(add_keyword, state=KeywordState.keyword, )
+    dp.register_message_handler(add_keyword, state=KeywordState.keyword)
