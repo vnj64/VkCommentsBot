@@ -1,5 +1,5 @@
-from config import load_config
 import requests
+from config import load_config
 
 config = load_config('.env')
 
