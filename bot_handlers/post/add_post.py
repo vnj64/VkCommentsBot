@@ -1,6 +1,5 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-from sqlalchemy.orm import sessionmaker
 
 from keyboards.reply.main_menu import back_main_menu
 from states.comment_state import CommentState
