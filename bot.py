@@ -9,11 +9,8 @@ from bot_handlers.profile import register_profile
 from bot_handlers.keyword.input_keyword import register_get_keyword
 from bot_handlers.keyword.add_keyword import register_add_keyword
 from bot_handlers.keyword.get_keywords import register_checker
-from bot_handlers.comments.comments import register_variables_handler
 from bot_handlers.post.add_post import register_group_add
-from bot_handlers.comments.get_comments import register_get_comments
 from bot_handlers.token.add_token import register_add_token
-from bot_handlers.token.delete_token import register_delete_token
 from config import load_config
 from db.tg_db import create_db_session
 
@@ -30,11 +27,8 @@ def register_all_handlers(dp):
     register_get_keyword(dp)
     register_add_keyword(dp)
     register_checker(dp)
-    register_variables_handler(dp)
     register_group_add(dp)
-    register_get_comments(dp)
     register_add_token(dp)
-    register_delete_token(dp)
 
 
 async def main():
