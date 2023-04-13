@@ -1,6 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 
+from keyboards.inline.comments import comment_methods, add_post, check_comments
 from keyboards.reply.main_menu import back_main_menu
 from states.comment_state import CommentState
 from models.post import Post
@@ -8,8 +9,12 @@ from models.post import Post
 from api_handlers.checker import comments_getter
 
 
-async def add_group(message: types.Message):
-    await message.answer("Введите group_id: ")
+async def get_post_variables(message: types.Message):
+    await message.answer("Что хотите сделать?", reply_markup=comment_methods)
+
+
+async def add_group(callback: types.CallbackQuery):
+    await callback.message.answer("Введите group_id: ")
     await CommentState.group_id.set()
 
 
@@ -30,7 +35,16 @@ async def all_rdy(message: types.Message, state: FSMContext):
     await state.finish()
 
 
+async def get_cmnts(callback: types.CallbackQuery):
+    session_maker = callback.bot.get('db')
+    comments = await Post.get_post_info(session_maker=session_maker, telegram_id=callback.from_user.id)
+    for comment in comments:
+        await callback.message.answer(comments_getter(comment[0], comment[1]))
+
+
 def register_group_add(dp: Dispatcher):
-    dp.register_message_handler(add_group, text="Добавить пост ✍️")
+    dp.register_message_handler(get_post_variables, text='Комментарии 📓')
+    dp.register_callback_query_handler(add_group, add_post.filter())
     dp.register_message_handler(return_group_id, state=CommentState.group_id)
-    dp.register_message_handler(all_rdy, state=CommentState.post_id, )
+    dp.register_message_handler(all_rdy, state=CommentState.post_id)
+    dp.register_callback_query_handler(get_cmnts, check_comments.filter())
