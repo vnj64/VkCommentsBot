@@ -23,10 +23,16 @@ class Db:
 
 
 @dataclass
+class CypherKey:
+    key: str
+
+
+@dataclass
 class Config:
     api: Api
     bot: TgBot
     db: Db
+    key: CypherKey
 
 
 def load_config(path: str = None):
@@ -47,5 +53,8 @@ def load_config(path: str = None):
             user=env.str("DATABASE_USER"),
             database=env.str("DATABASE_NAME"),
             port=env.str("DATABASE_PORT"),
+        ),
+        key=CypherKey(
+            key=env.str("CIPHER_KEY")
         )
     )
