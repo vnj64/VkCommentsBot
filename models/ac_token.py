@@ -7,8 +7,8 @@ from sqlalchemy.orm import sessionmaker
 class Token(Base):
     __tablename__ = 'encoded_token'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    telegram_id = Column(BigInteger)
-    token = Column(String)
+    telegram_id = Column(BigInteger, unique=True)
+    token = Column(String, unique=True)
 
     @classmethod
     async def get_token(cls, session_maker: sessionmaker, telegram_id: int):
@@ -36,7 +36,7 @@ class Token(Base):
     @classmethod
     async def delete_token(cls,
                            session_maker: sessionmaker,
-                           telegram_id: int,):
+                           telegram_id: int, ):
         async with session_maker() as db_session:
             sql = delete(cls.id).where(and_(cls.telegram_id == telegram_id))
             result = await db_session.execute(sql)
